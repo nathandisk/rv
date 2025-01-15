@@ -1,0 +1,215 @@
+ body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+          
+         
+            margin: 0;
+            padding: 0;
+            background-image: url(img/backbromo.jpeg);
+          
+            background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        /*  background-attachment: fixed; */
+           
+        }
+        .navbar-brand span {
+            color: #0AD18C; /* Brand color */
+        }
+        .exchange-container {
+            margin-top: 5rem;
+        }
+        .exchange-box {
+            background-color: #292e35;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .form-control, .form-select {
+            border: 2px solid #3C3C52;
+            border-radius: 8px;
+            color: #FFFFFF;
+            background-color: #1F1F2E;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0AD18C;
+            box-shadow: 0 0 5px rgba(10, 209, 140, 0.7);
+        }
+        .btn-green {
+            background-color: #0AD18C;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-green:hover {
+            background-color: #08B377;
+        }
+        .btn-outline-secondary {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            color: #0AD18C;
+            border: 2px solid #0AD18C;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #0AD18C;
+            color: white;
+        }
+        .exchange-section {
+            padding: 60px 15px;
+        }
+        .exchange-card {
+            background: #FFFFFF;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        .crypto-icon {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            background: #F9F9F9;
+            border-radius: 50%;
+            position: relative;
+        }
+        .crypto-icon img {
+            width: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 20px;
+            color: #1A202C;
+        }
+        .description {
+            font-size: 16px;
+            color: #4A5568;
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+        .floating-particles {
+            position: relative;
+        }
+        .floating-particles::before,
+        .floating-particles::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #0AD18C;
+            opacity: 0.3;
+            border-radius: 50%;
+            animation: float 6s infinite;
+        }
+        .floating-particles::before {
+            top: 10%;
+            left: 20%;
+            animation-delay: 1s;
+        }
+        .floating-particles::after {
+            bottom: 15%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .calculator-section {
+            padding: 60px 15px;
+        }
+        .calculator-card {
+            background: #FFFFFF;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #4A5568;
+        }
+        .calculate-btn {
+            background-color: #0AD18C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .calculate-btn:hover {
+            background-color: #09B57C;
+        }
+        .footer {
+        background-color: #0AD18C;
+        color: white;
+        padding: 30px 0;
+        margin-top: 50px;
+    }
+
+    .footer-text {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .social-icon {
+        color: white;
+        font-size: 24px;
+        transition: transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: scale(1.2);
+    }
+    .crypto-table {
+            margin-top: 20px;
+        }
+        .crypto-table .badge {
+            font-size: 0.75rem;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .fixed-rate-icon {
+            color: green;
+            font-size: 1.2rem;
+        }
+        
+
+    /* Ensure content is above the background aura */
+    .container, .navbar, .footer {
+      
+      
+    }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    
