@@ -1,169 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recycling Incentive System</title>
-    <script src="https://unpkg.com/web3@4.1.0-rc.0/dist/web3.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="all2.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        .navbar {
-            background-color: #6c5ce7;
-        }
-        .navbar-brand {
-            font-weight: bold;
-            color: #fff !important;
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .btn-primary {
-            background-color: #6c5ce7;
-            border-color: #6c5ce7;
-        }
-        .btn-primary:hover {
-            background-color: #5b4bc6;
-            border-color: #5b4bc6;
-        }
-        .form-control:focus {
-            border-color: #6c5ce7;
-            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
-        }
-        .navbar-brand .dark {
-    color: #343a40 !important;
-}
-.navbar-brand .light {
-    color: #fff !important;
-}
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#" > <span class="dark">TRASH</span><span>Coin</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Penukaran Mata Uang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Beli & Jual</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Produk NOW</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Dukungan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--=============== FAVICON ===============-->
+        <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+        <!--=============== REMIX ICONS ===============-->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <title>Trash Coin</title>
+    </head>
+    <body>
+        <!--=============== HEADER ===============-->
+        <header class="header" id="header">
+            <nav class="nav container">
+                <a href="#" class="nav__logo">
+                    <img src="assets/img/logo.png" alt="">
+                </a>
+
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="#home" class="nav__link active-link">Home</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#specs" class="nav__link">Information</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#case" class="nav__link">Exchange</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#specs2" class="nav__link">Market forecast</a>
+                        </li>                                    
+                    </ul>
+
                     
-                    <li class="nav-item">
-                        <a class="btn btn-green text-white" href="#" data-bs-toggle="modal" style="display: none;" data-bs-target="#walletModal" id="walletb">
-                            <img src="img/dompet.png" height="30px" alt="Wallet"> Wallet
-                        </a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-danger" href="#" style="display: none;" id="logoutb">
-                            <img src="img/logout.png" height="35px" alt="Logout"> Logout
-                        </a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-green text-white" id="connect">
-                            <i class="bi bi-arrow-up-right-circle-fill"></i> Login
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Wallet Information</h5>
-                        <button id="connectWallet" class="btn btn-primary w-100">Connect MetaMask</button>
-                        <p id="walletAddress" class="card-text">Wallet: Not connected</p>
-                        <p id="balance" class="card-text">Balance: -</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-coins me-2"></i>Buy Tokens</h5>
-                        <input type="number" id="ethAmount" class="form-control mb-3" placeholder="ETH Amount">
-                        <button id="buyTokens" class="btn btn-primary w-100">Buy Tokens</button>
-                        <p id="buyStatus" class="mt-3"></p>
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-exchange-alt me-2"></i>Swap Tokens</h5>
-                        <select name="tswap" id="tswap" class="form-control mb-3">
-                            <option value="">Select Token</option>
-                            <option value="ETH">ETH</option>
-                            <option value="DAI">DAI -pending</option>
-                            <option value="WETH">WETH-pending</option>
-                        </select>
-                        <input type="number" id="swapAmount" class="form-control mb-3" placeholder="Token Amount">
-                        <button id="swapTokens" class="btn btn-primary w-100">Swap Tokens</button>
-                        <p id="swapStatus" class="mt-3"></p>
-                        <p id="transaction" class="mt-2"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-paper-plane me-2"></i>Transfer Tokens</h5>
-                        <input type="text" id="recipient" class="form-control mb-3" placeholder="Recipient Address">
-                        <input type="number" id="transferAmount" class="form-control mb-3" placeholder="Token Amount">
-                        <button id="transferTokens" class="btn btn-primary w-100">Transfer Tokens</button>
-                        <p id="transferStatus" class="mt-3"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-function-line"></i>
+                </div>
+            </nav>
+            
+        </header>
+
+        
+
+        <main class="main">
+            <!--=============== HOME ===============-->
+            <section class="home section" id="home">
+                <div class="home__container container grid">
+                    <div>
+                        <img src="assets/img/Banner.png" alt="" class="home__img">
+                    </div>
+                    
+                    <div class="home__data">
+                        <div class="home__header">
+                            <h1 class="home__title">Welcome</h1>
+                            <h2 class="home__subtitle">Trash Coin</h2>
+                        </div>
+
+                        <div class="home__footer">
+                            <h3 class="home__title-description">Overview</h3>
+                            <p class="home__description">TrashCoin is a cryptocurrency where users submit trash to recycle into other utilities. In exchange for the trash, the users get a TrashCoin coin which can be exchanged for promotions such as discounts or vouchers to different vendors.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!--=============== SPONSOR ===============-->
+            <section class="sponsor section">
+                <div class="sponsor__container container grid">
+                    <img src="assets/img/sponsor1.png" alt="" class="sponsor__img">
+                    <img src="assets/img/sponsor2.png" alt="" class="sponsor__img">
+                    <img src="assets/img/sponsor3.png" alt="" class="sponsor__img">
+                    <img src="assets/img/sponsor4.png" alt="" class="sponsor__img">
+                </div>
+            </section>
+
+            <!--=============== SPECS ===============-->
+            <section class="specs section grid" id="specs">
+                <h2 class="section__title section__title-gradient">Information</h2>
+
+                <div class="specs__container container grid">
+                    <div class="specs__content grid">
+                        <div class="specs__data">
+                            <h3 class="specs__title">User Engagement</h3>
+                            <span class="specs__subtitle">The concept encourages user participation by having them "throw trash" at designated "TrashCoin Posts".</span>
+                        </div>
+    
+                        <div class="specs__data">
+                            <h3 class="specs__title">Waste Management</h3>
+                            <span class="specs__subtitle">The system includes essential steps like trash collection and sorting for proper waste management.</span>
+                        </div>
+    
+                        <div class="specs__data">
+                            <h3 class="specs__title">Recycling and Circularity</h3>
+                            <span class="specs__subtitle"> The image emphasizes recycling and the transformation of waste into new products, aligning with the principles of a circular economy.</span>
+                        </div>
+    
+                        <div class="specs__data">
+                            <h3 class="specs__title">Reward Mechanism</h3>
+                            <span class="specs__subtitle">Users are rewarded with TrashCoin for their recycling efforts, incentivizing participation in the system.</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <img src="assets/img/concept.png" alt="" class="specs__img">
+                    </div>
+                </div>
+            </section>
+
+            <!--=============== CASE ===============-->
+                    <section class="case section grid" id="case"></section>
+                    <div class="container calculator-section">
+                    <div class="row justify-content-center">
+                        <h2 class="section__title section__title-gradient">Exchange</h2>
+                  
+                    <div class="exchange-box mx-auto">
+                        <div class="row-EX align-items-center">
+                            <iframe src="html/index.html" frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:500px;width:100%;position:auto;border-radius:20px;" height="100%" width="100%"></iframe>
+                        </div>
+                    </div><!--</form>-->
+                </div>
+            </section>
+
+            <!--=============== Market Forcast ===============-->
+            <section class="specs2 section grid" id="specs2"></section>
+                <div class="container calculator-section">
+                <div class="row justify-content-center">
+                    <h2 class="section__title section__title-gradient">Market Forecast</h2>
+                    <iframe src="graph.html" frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:500px;width:100%;position:auto;border-radius:20px;" height="100%" width="100%"></iframe>
+                </div>
+                </div>    
+            </section>  
+        </main>
+
+        <!--=============== FOOTER ===============-->
+        <footer class="footer section">
+            <div class="footer__container container grid">
+                <a href="#" class="footer__logo">
+                    <img src="assets/img/Logo.png" alt="">
+                </a>
+    
+                <div class="footer__content">
+                    <h3 class="footer__title">Social Media</h3>
+    
+                    <ul class="footer__links">
+                        <li>
+                            <a href="https://www.instagram.com/" class="footer__link">Instagram</a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/" class="footer__link">Facebook</a>
+                        </li>
+                        <li>
+                            <a href="https://x.com/" class="footer__link">X</a>
+                        </li>
+                    </ul>
+                </div>
+    
+                <div class="footer__content">
+                    <h3 class="footer__title">Support</h3>
+    
+                    <ul class="footer__links">
+                        <li>
+                            <a href="https://william-sanjaya-kesuma.gitbook.io/trash-coin" class="footer__link">Gitbook</a>
+                        </li>
+                    </ul>
+                </div>
+    
+                <div class="footer__content">
+                    <form action="" class="footer__form">
+                        <input type="email" placeholder="Email" class="footer__input">
+                        <button class="button button--flex">
+                            <i class="ri-send-plane-line button__icon"></i> Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <p class="footer__copy">
+                <atarget="_blank" class="footer__copy-link">&#169; TrashCoin. All right reserved</a>
+            </p>
+        </footer>
+
+        <!--=============== SCROLL UP ===============-->
+        <a href="#" class="scrollup" id="scroll-up">
+            <i class="ri-arrow-up-s-line scrollup__icon"></i>
+        </a>
+        
+        <!--=============== SCROLL REVEAL ===============-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="assets/js/main.js"></script>
+
+        <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Custom Scripts -->
     <script src="scriptbaru.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const connectButton = document.getElementById('connect');
-            const walletButton = document.getElementById('walletb');
-            const logoutButton = document.getElementById('logoutb');
+        $(document).ready(function () {
+  // Exchange rate (example values, you should replace these with real-time data)
+     // Exchange rate (example values, you should replace these with real-time data)
+     const exchangeRates = {
+            'ETH_BTC': 0.034323,
+            'BTC_ETH': 29.1351,
+            'ETH_TRASH': 100,
+            'TRASH_ETH': 0.01,
+            'BTC_TRASH': 2915.45,
+            'TRASH_BTC': 0.000343
+        };
 
-            connectButton.addEventListener('click', async () => {
-                if (typeof window.ethereum !== 'undefined') {
-                    try {
-                        await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        connectButton.style.display = 'none';
-                        walletButton.style.display = 'inline-block';
-                        logoutButton.style.display = 'inline-block';
-                    } catch (error) {
-                        console.error('User denied account access');
-                    }
-                } else {
-                    console.log('MetaMask not detected');
-                    alert('Please install MetaMask to use this feature');
+        // Function to update amounts
+        function updateAmounts(changedInput) {
+            let sendAmount = parseFloat($('#sendingAmount').val());
+            let sendCurrency = $('#sendCurrency').val();
+            let receiveCurrency = $('#receiveCurrency').val();
+            let rate = exchangeRates[sendCurrency + '_' + receiveCurrency];
+
+            if (rate) {
+                if (changedInput === 'send') {
+                    let receiveAmount = sendAmount * rate;
+                    $('#receivingAmount').val(receiveAmount.toFixed(6));
+                } else if (changedInput === 'receive') {
+                    let receiveAmount = parseFloat($('#receivingAmount').val());
+                    let sendAmount = receiveAmount / rate;
+                    $('#sendingAmount').val(sendAmount.toFixed(6));
                 }
+            }
+        }
+
+        function updateLink() {
+        let sendAmount = parseFloat($('#sendingAmount').val().replace(',', '.')) || 0;
+        let receiveAmount = parseFloat($('#receivingAmount').val().replace(',', '.')) || 0;
+        let sendCurrency = $('#sendCurrency').val();
+        let receiveCurrency = $('#receiveCurrency').val();
+
+    }
+    function updateAmounts(changedInput) {
+        let sendAmount = parseFloat($('#sendingAmount').val().replace(',', '.'));
+        let receiveAmount = parseFloat($('#receivingAmount').val().replace(',', '.'));
+        let sendCurrency = $('#sendCurrency').val();
+        let receiveCurrency = $('#receiveCurrency').val();
+        let rate = exchangeRates[sendCurrency + '_' + receiveCurrency];
+
+        if (rate) {
+            if (changedInput === 'send' && !isNaN(sendAmount)) {
+                receiveAmount = sendAmount * rate;
+                $('#receivingAmount').val(receiveAmount.toFixed(6));
+                $('#sendingAmount').removeClass('is-invalid');
+            } else if (changedInput === 'receive' && !isNaN(receiveAmount)) {
+                sendAmount = receiveAmount / rate;
+                $('#sendingAmount').val(sendAmount.toFixed(6));
+                $('#receivingAmount').removeClass('is-invalid');
+            } else {
+                // Invalid input
+                if (changedInput === 'send') {
+                    $('#sendingAmount').addClass('is-invalid');
+                } else {
+                    $('#receivingAmount').addClass('is-invalid');
+                }
+            }
+        }
+        updateLink();
+    }
+        // Function to update currency options
+        function updateCurrencyOptions() {
+            let sendCurrency = $('#sendCurrency').val();
+            let receiveCurrency = $('#receiveCurrency').val();
+
+            // Disable the selected send currency in the receive dropdown
+            $('#receiveCurrency option').prop('disabled', false);
+            $('#receiveCurrency option[value="' + sendCurrency + '"]').prop('disabled', true);
+
+            // Disable the selected receive currency in the send dropdown
+            $('#sendCurrency option').prop('disabled', false);
+            $('#sendCurrency option[value="' + receiveCurrency + '"]').prop('disabled', true);
+
+            // If both dropdowns have the same value, change one of them
+            if (sendCurrency === receiveCurrency) {
+                let availableOption = $('#receiveCurrency option:not(:disabled):first').val();
+                $('#receiveCurrency').val(availableOption);
+            }
+        }
+
+        // Event listeners
+        $('#sendingAmount, #receivingAmount').on('input', function() {
+        updateAmounts($(this).attr('id') === 'sendingAmount' ? 'send' : 'receive');
+    });
+
+    $('#sendCurrency, #receiveCurrency').on('change', function() {
+        updateCurrencyOptions();
+        updateAmounts('send');
+    });
+      
+
+        // Swap button functionality
+        $('.btn-outline-secondary').click(function () {
+            let sendValue = $('#sendingAmount').val();
+            let receiveValue = $('#receivingAmount').val();
+            let sendCurrency = $('#sendCurrency').val();
+            let receiveCurrency = $('#receiveCurrency').val();
+
+            // Swap values
+            $('#sendingAmount').val(receiveValue);
+            $('#receivingAmount').val(sendValue);
+            $('#sendCurrency').val(receiveCurrency);
+            $('#receiveCurrency').val(sendCurrency);
+
+            // Update currency options and amounts after swap
+            updateCurrencyOptions();
+            updateAmounts('send');
+        });
+
+        // Initial update
+        updateCurrencyOptions();
+        updateAmounts('send');
+            const conversionRate = 0.03343; // Example rate for ETH to TRASH
+        
+       
+
+            
+        });
+    </script> <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/web3@4.1.0-rc.0/dist/web3.min.js"></script>
+     <script>
+        // Sample Data
+        const cryptoData = [
+            {id: 1, pair: "ETH ke ETH BSC", pasangan: "ETH / ETH", rate: true, available: true},
+            {id: 2, pair: "ETH ke ETH Arbitrum ONE", pasangan: "ETH / ETH", rate: false, available: true},
+            {id: 3, pair: "ETH ke ETH OP", pasangan: "ETH / ETH", rate: false, available: true},
+            {id: 4, pair: "ETH ke ETH Base", pasangan: "ETH / ETH", rate: true, available: true},
+            {id: 5, pair: "ETH ke ETH TRASH", pasangan: "ETH / ETH", rate: true, available: true},
+            {id: 6, pair: "TRASH ke ETH", pasangan: "ETH / ETH", rate: false, available: true},
+            {id: 7, pair: "ETH ke ETH lna", pasangan: "ETH / ETH", rate: false, available: true},
+            {id: 8, pair: "ETH ke ETH", pasangan: "ETH / ETH", rate: true, available: true},
+            {id: 9, pair: "ETH ke USDT ETH", pasangan: "ETH / USDT", rate: true, available: true},
+            {id: 10, pair: "ETH ke USDT BSC", pasangan: "ETH / USDT", rate: true, available: true},
+        ];
+
+        // Render Table
+        function renderTable(data) {
+            const tableBody = $("#cryptoTableBody");
+            tableBody.empty(); // Clear table
+            data.forEach(row => {
+                const rateIcon = row.rate ? `<span class="fixed-rate-icon">✔</span>` : `<span>-</span>`;
+                const availableIcon = row.available ? `<span>⬆⬇</span>` : `<span>-</span>`;
+                tableBody.append(`
+                    <tr>
+                        <td>${row.id}</td>
+                        <td>${row.pair}</td>
+                        <td>${row.pasangan}</td>
+                        <td>${rateIcon}</td>
+                        <td>${availableIcon}</td>
+                    </tr>
+                `);
             });
+        }
+
+        // Initial Render
+        renderTable(cryptoData);
+
+        // Search Functionality
+        $("#searchInput").on("input", function() {
+            const query = $(this).val().toLowerCase();
+            const filteredData = cryptoData.filter(row => row.pair.toLowerCase().includes(query));
+            renderTable(filteredData);
+        });
+
+        // Sort Functionality
+        $("#sortSelect").on("change", function() {
+            const sortBy = $(this).val();
+            let sortedData = [...cryptoData];
+            if (sortBy === "asc") {
+                sortedData.sort((a, b) => a.id - b.id);
+            } else if (sortBy === "desc") {
+                sortedData.sort((a, b) => b.id - a.id);
+            }
+            renderTable(sortedData);
         });
     </script>
-</body>
+        <script>
+        $(document).ready(function () {
+            // Your existing JavaScript code here
+
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
+
+<script>
+    document.getElementById('menukarkannya').addEventListener('click', function(event) {
+        event.preventDefault();  // Prevent page from reloading or causing issues
+        // Add your functionality here, e.g., an AJAX call, or form submission
+        console.log('Button clicked');  // For testing, you can remove this later
+        // You can also use an AJAX request to send data to the server if needed
+    });
+</script>
+
+<script>
+    async function connectWallet() {
+        if (window.ethereum) {
+            web3 = new Web3(window.ethereum);
+            await window.ethereum.enable();
+            const accounts = await web3.eth.getAccounts();
+            account = accounts[0];
+            document.getElementById("walletAddress").textContent = `Wallet: ${account}`;
+            contract = new web3.eth.Contract(abi, contractAddress);
+            updateBalance();
+        } else {
+            alert("MetaMask is not installed. Please install MetaMask to use this app.");
+        }
+    }
+
+    // Attach the event listener to the "Connect Wallet" link
+    document.getElementById("loginBtn").addEventListener("click", connectWallet);
+</script>
+    </body>
 </html>

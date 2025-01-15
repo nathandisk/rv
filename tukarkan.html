@@ -1,0 +1,127 @@
+<?php
+session_start();
+require_once('backend/config.php');
+
+$sendingAmount = $_GET['sendn'] ?? '';
+$sendCurrency = $_GET['send'] ?? '';
+$receivingAmount = $_GET['recn'] ?? '';
+$receiveCurrency = $_GET['rec'] ?? '';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange - TRASH-COIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .exchange-card {
+            max-width: 500px;
+            margin: 2rem auto;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+        .btn-exchange {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .btn-exchange:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card exchange-card">
+                    <div class="card-header">
+                        <h2 class="mb-0">Exchange TRASH-COIN</h2>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        // Fetch current balances
+                        $sql = "SELECT ETH, TrashCoin FROM $tablename WHERE address = :wallet";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':wallet', $_SESSION['wallet'], PDO::PARAM_STR);
+                        $stmt->execute();
+
+                        if ($stmt->rowCount() > 0) {
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $currentETH = $row['ETH'];
+                            $currentTrashCoin = $row['TrashCoin'];
+
+                            // Update balances based on the transaction
+                            if ($sendCurrency == "ETH") {
+                                $newETH = $currentETH - $sendingAmount;
+                                $newTrashCoin = $currentTrashCoin + $receivingAmount;
+                                
+                                if ($newETH < 0) {
+                                    echo '<div class="alert alert-danger">Insufficient ETH balance</div>';
+                                } else {
+                                    $sql = "UPDATE $tablename SET ETH = :eth, TrashCoin = :trash WHERE address = :wallet";
+                                }
+                            } else if ($sendCurrency == "TRASH") {
+                                $newTrashCoin = $currentTrashCoin - $sendingAmount;
+                                $newETH = $currentETH + $receivingAmount;
+                                
+                                if ($newTrashCoin < 0) {
+                                    echo '<div class="alert alert-danger">Insufficient TrashCoin balance</div>';
+                                } else {
+                                    $sql = "UPDATE $tablename SET TrashCoin = :trash, ETH = :eth WHERE address = :wallet";
+                                }
+                            } else {
+                                echo '<div class="alert alert-danger">Invalid currency</div>';
+                            }
+
+                            // Perform the update if no errors
+                            if (isset($sql)) {
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bindParam(':eth', $newETH, PDO::PARAM_STR);
+                                $stmt->bindParam(':trash', $newTrashCoin, PDO::PARAM_STR);
+                                $stmt->bindParam(':wallet', $_SESSION['wallet'], PDO::PARAM_STR);
+                                
+                                if ($stmt->execute()) {
+                                    echo '<div class="alert alert-success">Transaction successful. New balances: ETH = ' . $newETH . ', TrashCoin = ' . $newTrashCoin . '</div>';
+                                } else {
+                                    echo '<div class="alert alert-danger">Error updating record: ' . print_r($stmt->errorInfo(), true) . '</div>';
+                                }
+                            }
+                        } else {
+                            echo '<div class="alert alert-warning">No record found for this wallet address</div>';
+                        }
+                        ?>
+
+                        <div class="mt-4">
+                            <h4>Transaction Details:</h4>
+                            <ul class="list-group">
+                                <li class="list-group-item">Sending: <?php echo $sendingAmount . ' ' . $sendCurrency; ?></li>
+                                <li class="list-group-item">Receiving: <?php echo $receivingAmount . ' ' . $receiveCurrency; ?></li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="index.php" class="btn btn-exchange btn-lg text-white">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

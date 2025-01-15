@@ -48,88 +48,18 @@ async function init() {
 }
 
 // Connect MetaMask wallet
-// Connect MetaMask wallet
 document.getElementById("connectWallet").onclick = async function () {
     try {
-        await init(); // Ensure web3 and contract are initialized
         const accounts = await ethereum.request({ method: "eth_requestAccounts" });
         userAccount = accounts[0];
         document.getElementById("walletAddress").innerText = `Wallet: ${userAccount}`;
-        
-        // Fetch and display token balance after connecting
-        await updateTokenBalance();
     } catch (error) {
         console.error(error);
         alert("Failed to connect wallet.");
     }
 };
 
-async function updateTokenBalance() {
-    if (!window.ethereum || !userAccount) {
-        alert("Please connect your MetaMask wallet first.");
-        return;
-    }
 
-    try {
-        // Get the ETH balance in Wei
-        const balanceWei = await web3.eth.getBalance(userAccount);
-        
-        // Convert Wei to Ether (ETH)
-        const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
-        
-        // Display the ETH balance
-        const balanceElement = document.getElementById("balance");
-        if (balanceElement) {
-            balanceElement.innerText = `Your ETH Balance: ${balanceEth} ETH`;
-        } else {
-            console.warn("Element with id 'balance' not found");
-        }
-
-        // Get the token balance (ERC20 token balance)
-        // Assuming your contract has a balanceOf method
-        if (contract.methods.balanceOf) {
-            const tokenBalanceWei = await contract.methods.balanceOf(userAccount).call();
-            const tokenBalance = web3.utils.fromWei(tokenBalanceWei, 'ether');  // Assumes token has 18 decimal places
-            const tokenBalanceElement = document.getElementById("tokenBalance");
-            if (tokenBalanceElement) {
-                tokenBalanceElement.innerText = `Your Token Balance: ${tokenBalance} RV`;
-            } else {
-                console.warn("Element with id 'tokenBalance' not found");
-            }
-        } else {
-            console.warn("Contract does not have a balanceOf method");
-        }
-
-    } catch (error) {
-        console.error("Error fetching balances:", error);
-    }
-}
-document.getElementById("checkBalance").onclick = async function () {
-    if (!window.ethereum || !userAccount) {
-        alert("Please connect your MetaMask wallet first.");
-        return;
-    }
-
-    try {
-        // Get the ETH balance in Wei
-        const balanceWei = await web3.eth.getBalance(userAccount);
-        
-        // Convert Wei to Ether (ETH)
-        const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
-        
-        // Display the ETH balance
-        document.getElementById("balance").innerText = `Your ETH Balance: ${balanceEth} ETH`;
-
-        // Get the token balance (ERC20 token balance)
-        const tokenBalanceWei = await contract.methods.balanceOf(userAccount).call();
-        const tokenBalance = web3.utils.fromWei(tokenBalanceWei, 'ether');  // Assumes token has 18 decimal places
-        document.getElementById("tokenBalance").innerText = `Your Token Balance: ${tokenBalance} RV`;
-
-    } catch (error) {
-        console.error("Error fetching balances:", error);
-      
-    }
-};
 // Buy RV Tokens
 document.getElementById("buyTokens").onclick = async function () {
     const ethAmount = document.getElementById("ethAmount").value;
